@@ -6,8 +6,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     //Speed of the character
-    private float m_speed = 5.0f;
-    private float m_jumpForce = 10.0f;
+    private float m_speed = 10.0f;
+    private float m_jumpForce = 5.0f;
     private bool isOnGround = true;
     private Vector2 m_movement = Vector2.zero;
 
@@ -37,10 +37,11 @@ public class PlayerController : MonoBehaviour
         direction.x = Mathf.Clamp(m_movement.x * m_speed - m_rigidbody.velocity.x, -m_speed, m_speed);
         bool jump = m_movement.y > 0.0f;
 
-        m_rigidbody.AddForce(direction);
+        m_rigidbody.AddForce(direction, ForceMode2D.Force);
         if(jump && isOnGround)
         {
             m_rigidbody.AddForce(Vector2.up * m_jumpForce, ForceMode2D.Impulse);
+            isOnGround = false;
         }
     }
 
