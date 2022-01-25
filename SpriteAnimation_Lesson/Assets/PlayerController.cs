@@ -14,19 +14,32 @@ public class PlayerController : MonoBehaviour
     //Components
     private Rigidbody2D m_rigidbody;
     private Animator m_animator;
-
+    private SpriteRenderer m_spriteRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
         m_rigidbody = GetComponent<Rigidbody2D>();
         m_animator = GetComponent<Animator>();
+        m_spriteRenderer = GetComponent<SpriteRenderer>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
+        //We are going to the right
+        if(horizontalInput > 0)
+        {
+            m_spriteRenderer.flipX = false;
+        }else if(horizontalInput < 0) // facing left
+        {
+            m_spriteRenderer.flipX = true;
+        }
+
+        float moveSpeed = Mathf.Abs(horizontalInput);
+        m_animator.SetFloat("Speed", moveSpeed);
         float jump = Input.GetAxis("Jump");
         m_movement = new Vector2(horizontalInput, jump);
     }
