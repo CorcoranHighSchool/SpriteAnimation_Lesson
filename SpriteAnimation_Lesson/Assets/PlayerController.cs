@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        m_animator.SetFloat("yVelocity", m_rigidbody.velocity.y);
         Vector2 direction = Vector2.zero;
         direction.x = Mathf.Clamp(m_movement.x * m_speed - m_rigidbody.velocity.x, -m_speed, m_speed);
         bool jump = m_movement.y > 0.0f;
@@ -53,6 +54,7 @@ public class PlayerController : MonoBehaviour
         m_rigidbody.AddForce(direction, ForceMode2D.Force);
         if(jump && isOnGround)
         {
+            m_animator.SetBool("isJumping", true);
             m_rigidbody.AddForce(Vector2.up * m_jumpForce, ForceMode2D.Impulse);
             isOnGround = false;
         }
@@ -61,6 +63,9 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         isOnGround = collision.gameObject.CompareTag("Floor");
+        if (isOnGround)
+        {
+            m_animator.SetTrigger("Grounded");
+        }
     }
-
 }
