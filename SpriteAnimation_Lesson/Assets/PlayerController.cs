@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     //Speed of the character
     private float m_speed = 10.0f;
     private float m_jumpForce = 5.0f;
-    private bool isOnGround = true;
+    private bool m_isOnGround = true;
     private Vector2 m_movement = Vector2.zero;
 
     //Components
@@ -52,18 +52,18 @@ public class PlayerController : MonoBehaviour
         bool jump = m_movement.y > 0.0f;
 
         m_rigidbody.AddForce(direction, ForceMode2D.Force);
-        if(jump && isOnGround)
+        if(jump && m_isOnGround)
         {
-            m_animator.SetBool("isJumping", true);
+            m_animator.SetTrigger("isJumping");
             m_rigidbody.AddForce(Vector2.up * m_jumpForce, ForceMode2D.Impulse);
-            isOnGround = false;
+            m_isOnGround = false;
         }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        isOnGround = collision.gameObject.CompareTag("Floor");
-        if (isOnGround)
+        m_isOnGround = collision.gameObject.CompareTag("Floor");
+        if (m_isOnGround)
         {
             m_animator.SetTrigger("Grounded");
         }
